@@ -16,7 +16,7 @@ jobs:
           keys:
             # Find a cache corresponding to this specific package-lock.json checksum
             # when this file is changed, this key will fail
-            - build-debug-cache-{{ checksum "Cargo.lock" }}
+            - build-debug-cache-{{ checksum "Cargo.toml" }}
       - run:
           name: Install deps
           command: "cargo build"
@@ -24,6 +24,6 @@ jobs:
           name: Run Tests
           command: "cargo test"
       - save_cache:
-          key: build-debug-cache-{{ checksum "Cargo.lock" }}
+          key: build-debug-cache-{{ checksum "Cargo.toml" }}
           paths:
             - target/debug/
