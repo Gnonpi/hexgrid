@@ -9,6 +9,9 @@ jobs:
     steps:
       - checkout
       - run: cargo --version
+      - run:
+          name: ls
+          command: "ls; ls /home/circleci/project/"
       - restore_cache:
           keys:
             # Find a cache corresponding to this specific package-lock.json checksum
