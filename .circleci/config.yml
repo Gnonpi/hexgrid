@@ -9,6 +9,18 @@ jobs:
     steps:
       - checkout
       - run: cargo --version
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json checksum
+            # when this file is changed, this key will fail
+            - build-debug-cache-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Install deps
+          command: "cargo build"
       - run:
           name: Run Tests
           command: "cargo test"
+      - save_cache:
+          key: build-debug-cache-{{ checksum "Cargo.lock" }}
+          paths:
+            - target/debug/
