@@ -1,0 +1,26 @@
+# taken from 
+# https://circleci.com/blog/rust-ci/
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/rust:1.50.0
+    steps:
+      - checkout
+      - run: cargo --version
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json checksum
+            # when this file is changed, this key will fail
+            - build-debug-cache-{{ checksum "Cargo.toml" }}
+      - run:
+          name: Install deps
+          command: "cargo build"
+      - run:
+          name: Run Tests
+          command: "cargo test"
+      - save_cache:
+          key: build-debug-cache-{{ checksum "Cargo.toml" }}
+          paths:
+            - target/debug/
